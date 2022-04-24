@@ -77,6 +77,6 @@ app.get('/getCurrentUser', async (req, res) => {
     }
 })
 
-server.listen(8000, () => {
+server.listen(process.env.PORT || 5000, () => {
     console.log('working')
 })

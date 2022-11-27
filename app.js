@@ -5,6 +5,7 @@ const server = http.createServer(app);
 const cors = require('cors')
 const qs = require('qs')
 const { default: axios } = require('axios');
+const axiosInstance = require('./axiosInstance');
 
 app.use(cors())
 require('dotenv').config()
@@ -59,14 +60,77 @@ app.get('/refreshToken', async (req,res) => {
         res.status(error.response.status)
         res.json(error)
     }
-
 })
 
 app.get('/getCurrentUser', async (req, res) => {
     try {
-        const result = await axios.get('https://api.spotify.com/v1/me', { headers: {
+        const result = await axiosInstance.get('/me', { headers: {
             'Authorization': req.headers.authorization,
             'Content-Type': 'application/json'
+        }})
+
+        res.status(200)
+        res.json(result.data)
+    } catch (error) {
+        res.status(error.response.status)
+        res.json(error)
+    }
+})
+
+app.get('/current-user-playlists', async (req, res) => {
+    try {
+        const result = await axiosInstance.get('/me/playlists', { headers: {
+            'Authorization': req.headers.authorization,
+            'Content-Type': 'application/json'
+        }, params: { sdfsd: 50 }})
+        
+        res.status(200)
+        res.json(result.data)
+    } catch (error) {
+        res.status(error.response.status)
+        res.json(error)
+    }
+})
+
+app.get('/current-user-albums', async (req, res) => {
+    try {
+        const result = await axiosInstance.get('/me/albums', { headers: {
+            'Authorization': req.headers.authorization,
+            'Content-Type': 'application/json'
+        }})
+
+        res.status(200)
+        res.json(result.data)
+    } catch (error) {
+        res.status(error.response.status)
+        res.json(error)
+    }
+})
+
+app.get('/new-releases', async (req, res) => {
+    try {
+        const result = await axiosInstance.get('/browse/new-releases', { headers: {
+            'Authorization': req.headers.authorization,
+            'Content-Type': 'application/json'
+        }});
+
+        res.status(200)
+        res.json(result.data)
+    } catch (error) {
+        res.status(error.response.status)
+        res.json(error)
+    }
+})
+
+app.get('/search', async (req, res) => {
+    try {
+        console.log(req.query)
+        const result = await axiosInstance.get('/search', { headers: {
+            'Authorization': req.headers.authorization,
+            'Content-Type': 'application/json'
+        }, params: {
+            ...req.query,
+            type: req.query.type === 'all' ? 'album,artist,playlist,track,show,episode,audiobook' : req.query.type
         }})
 
         res.status(200)

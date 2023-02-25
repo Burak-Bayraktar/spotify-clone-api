@@ -68,7 +68,6 @@ app.get('/getCurrentUser', async (req, res) => {
             'Authorization': req.headers.authorization,
             'Content-Type': 'application/json'
         }})
-
         res.status(200)
         res.json(result.data)
     } catch (error) {
@@ -82,7 +81,7 @@ app.get('/current-user-playlists', async (req, res) => {
         const result = await axiosInstance.get('/me/playlists', { headers: {
             'Authorization': req.headers.authorization,
             'Content-Type': 'application/json'
-        }, params: { sdfsd: 50 }})
+        }})
         
         res.status(200)
         res.json(result.data)
@@ -124,7 +123,6 @@ app.get('/new-releases', async (req, res) => {
 
 app.get('/search', async (req, res) => {
     try {
-        console.log(req.query)
         const result = await axiosInstance.get('/search', { headers: {
             'Authorization': req.headers.authorization,
             'Content-Type': 'application/json'
@@ -137,6 +135,20 @@ app.get('/search', async (req, res) => {
         res.json(result.data)
     } catch (error) {
         res.status(error.response.status)
+        res.json(error)
+    }
+})
+
+app.get('/user-top/:type', async (req, res) => {
+    try {
+        const result = await axiosInstance.get(`/me/top/${req.params.type}`, { headers: {
+            'Authorization': req.headers.authorization,
+            'Content-Type': 'application/json'
+        }})
+        res.status(200)
+        console.log(result.data)
+        res.json(result.data)
+    } catch (error) {
         res.json(error)
     }
 })

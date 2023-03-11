@@ -146,10 +146,28 @@ app.get('/user-top/:type', async (req, res) => {
             'Content-Type': 'application/json'
         }})
         res.status(200)
-        console.log(result.data)
         res.json(result.data)
     } catch (error) {
         res.json(error)
+    }
+})
+
+app.get('/user/following-artists', async (req, res) => {
+    debugger
+    try {
+        const result = await axiosInstance.get(`/me/following?type=artist`, {
+            headers: {
+                'Authorization': req.headers.authorization,
+                'Content-Type': 'application/json'
+            }
+        })
+        debugger;
+        console.log('RESULT', result.data)
+        res.status(200);
+        res.json(result.data);
+    } catch (error) {
+        console.log('ERROR', error)
+        res.json(error);
     }
 })
 

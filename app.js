@@ -171,6 +171,47 @@ app.get('/user/following-artists', async (req, res) => {
     }
 })
 
+app.get('/featured-playlists', async (req, res) => {
+    try {
+        const result = await axiosInstance.get('/browse/featured-playlists', {  headers: {
+            'Authorization': req.headers.authorization,
+            'Content-Type': 'application/json'
+        }})
+        res.status(200)
+        res.json(result.data)
+    } catch (error) {
+        res.json(error)
+    }
+})
+
+app.get('/new-releases', async (req, res) => {
+    try {
+        const result = await axiosInstance.get('/browse/new-releases', { headers: {
+            'Authorization': req.headers.authorization,
+            'Content-Type': 'application/json'
+        }})
+        res.status(200)
+        res.json(result.data)
+    } catch (error) {
+        res.json(error)
+    }
+})
+
+app.get('/recommendations', async (req, res) => {
+    try {
+        const result = await axiosInstance.get('/recommendations', { headers: {
+            'Authorization': req.headers.authorization,
+            'Content-Type': 'application/json'
+        }, params: {
+            ...req.query
+        }})
+        res.status(200)
+        res.json(result.data)
+    } catch (error) {
+        res.json(error)
+    }
+})
+
 server.listen(process.env.PORT || 5000, () => {
     console.log('working')
 })
